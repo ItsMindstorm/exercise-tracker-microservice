@@ -26,10 +26,24 @@ let users = [
 
 let exercises = [
   {
-    _id: "",
+    _id: " bda96a28-b13d-41c7-bf52-91b63eba4850",
     description: "testdata",
     duration: 60,
-    date: "",
+    date: new Date().toDateString(),
+  },
+
+  {
+    _id: " bda96a28-b13d-41c7-bf52-91b63eba4850",
+    description: "testdata",
+    duration: 60,
+    date: new Date().toDateString(),
+  },
+
+  {
+    _id: " bda96a28-b13d-41c7-bf52-91b63eba4850",
+    description: "testdata",
+    duration: 60,
+    date: new Date().toDateString(),
   },
 ];
 
@@ -77,36 +91,64 @@ app.get("/api/users/:_id/logs", (req, res) => {
     }
   };
 
-  const getExercises = (_id) => {
+  const getExercises = (_id, limit) => {
     const matchIdWithExercise = exercises.filter((exercises) => {
       return exercises._id === _id;
     });
 
-    return matchIdWithExercise;
+    if (limit > 0) {
+      const slicedExercises = matchIdWithExercise.slice(0, limit);
+      return slicedExercises;
+    } else {
+      return matchIdWithExercise;
+    }
   };
 
-  const countExercises = (_id) => {
+  const countExercises = (_id, limit) => {
     let count = 0;
-    exercises.forEach((exercise) => {
-      if (exercise._id === _id) {
-        count++;
-      }
-    });
+    if (limit) {
+      count = limit;
+    } else {
+      exercises.forEach((exercise) => {
+        if (exercise._id === _id) {
+          count++;
+        }
+      });
+    }
 
     return count;
   };
 
   const findUsrName = getUsrName(req.params._id);
-  const findExercises = getExercises(req.params._id);
-  const counting = countExercises(req.params._id);
 
   if (checkId(req.params._id)) {
-    res.json({
-      username: findUsrName,
-      count: counting,
-      _id: req.params._id,
-      log: findExercises,
-    });
+    console.log(req.query.limit);
+    if (req.query.limit) {
+      const from = req.query.from;
+      const to = req.query.to;
+      const limit = req.query.limit;
+
+      const findExercisesLimit = getExercises(req.params._id, limit);
+      const countingToLimit = countExercises(req.params._id, limit);
+
+      res.json({
+        username: findUsrName,
+        count: countingToLimit,
+        _id: req.params._id,
+        log: findExercisesLimit,
+      });
+    } else {
+      const findExercises = getExercises(req.params._id);
+      console.log(findExercises);
+      const counting = countExercises(req.params._id);
+
+      res.json({
+        username: findUsrName,
+        count: counting,
+        _id: req.params._id,
+        log: findExercises,
+      });
+    }
   }
 });
 
