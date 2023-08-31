@@ -24,28 +24,7 @@ let users = [
   },
 ];
 
-let exercises = [
-  {
-    _id: " bda96a28-b13d-41c7-bf52-91b63eba4850",
-    description: "testdata",
-    duration: 60,
-    date: new Date().toDateString(),
-  },
-
-  {
-    _id: " bda96a28-b13d-41c7-bf52-91b63eba4850",
-    description: "testdata",
-    duration: 60,
-    date: new Date().toDateString(),
-  },
-
-  {
-    _id: " bda96a28-b13d-41c7-bf52-91b63eba4850",
-    description: "testdata",
-    duration: 60,
-    date: new Date().toDateString(),
-  },
-];
+let exercises = [];
 
 const checkId = (sentId) => {
   const findId = users.find((users) => {
