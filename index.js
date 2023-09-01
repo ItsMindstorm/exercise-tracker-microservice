@@ -70,14 +70,28 @@ app.get("/api/users/:_id/logs", (req, res) => {
     }
   };
 
-  const getExercises = (_id, limit) => {
-    const matchIdWithExercise = exercises.filter((exercises) => {
-      return exercises._id === _id;
-    });
+  const getExercises = (_id, limit, from, to) => {
+    const matchIdWithExercise = exercises
+      .filter((exercises) => {
+        return exercises._id === _id;
+      })
+      .sort((a, b) => {
+        a.date - b.date;
+      });
 
-    if (limit > 0) {
-      const slicedExercises = matchIdWithExercise.slice(0, limit);
-      return slicedExercises;
+    if (from && to) {
+      const fromTo = matchIdWithExercise.filter((exercises) => {
+        const fromDate = new Date(from).toDateString();
+        const toDate = new Date(to).toDateString();
+        return exercises.date >= fromDate && exercises.date <= toDate;
+      });
+
+      if (limit > 0) {
+        const fromToSliced = fromTo.slice(0, limit);
+        return fromToSliced;
+      } else {
+        return fromTo;
+      }
     } else {
       return matchIdWithExercise;
     }
@@ -101,13 +115,12 @@ app.get("/api/users/:_id/logs", (req, res) => {
   const findUsrName = getUsrName(req.params._id);
 
   if (checkId(req.params._id)) {
-    console.log(req.query.limit);
-    if (req.query.limit) {
-      const from = req.query.from;
-      const to = req.query.to;
-      const limit = req.query.limit;
+    const from = req.query.from;
+    const to = req.query.to;
+    const limit = req.query.limit;
 
-      const findExercisesLimit = getExercises(req.params._id, limit);
+    if (limit || (from && to)) {
+      const findExercisesLimit = getExercises(req.params._id, limit, from, to);
       const countingToLimit = countExercises(req.params._id, limit);
 
       res.json({
