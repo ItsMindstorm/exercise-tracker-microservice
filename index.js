@@ -17,12 +17,7 @@ app.use(
   }),
 );
 
-let users = [
-  {
-    user: "ItsMindstorm",
-    _id: "bda96a28-b13d-41c7-bf52-91b63eba4850",
-  },
-];
+let users = [];
 
 let exercises = [];
 
