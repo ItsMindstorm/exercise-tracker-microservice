@@ -4,27 +4,6 @@ const cors = require("cors");
 const parser = require("body-parser");
 require("dotenv").config();
 
-const sqlite = require('sqlite3')
-const db = new sqlite.Database("./exercises.db", (err) => {
-	if (err) {
-		console.error(err.message);
-	} else {
-		console.log("Connected to DB")
-	}
-})
-
-db.serialize(() => {
-	db.each("SELECT username FROM users", (err, user) => {
-		if (err) {
-			console.log(err)
-		} else {
-			console.log(user)
-		}
-	})
-})
-
-db.close();
-
 app.use(cors());
 app.use(express.static("public"));
 
