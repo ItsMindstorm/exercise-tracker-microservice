@@ -33,7 +33,7 @@ const checkId = (sentId) => {
 
 app.post("/api/users/:_id/exercises", (req, res) => {
 	const description = req.body.description;
-	const duration = req.body.duration;
+	const duration = parseInt(req.body.duration);
 	const date = new Date(req.body.date).toDateString();
 
 	if (checkId(req.params._id)) {
