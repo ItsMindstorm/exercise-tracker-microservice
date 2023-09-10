@@ -48,13 +48,13 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 
 app.get("/api/users/:_id/logs", async (req, res) => {
 	const limit = parseInt(req.query.limit)
-	const from = req.query.from ? new Date(req.query.from) : null
-	const to = req.query.to ? new Date(req.query.to) : null
+	const from = req.query.from ? new Date(req.query.from) : undefined
+	const to = req.query.to ? new Date(req.query.to) : undefined
 	console.log(new Date(from))
 	console.log(new Date(to))
 
 	if (await users.findOne({ id: req.params._id })) {
-		const query = {
+		const query = from === undefined && to === undefined ? { id: req.params._id } : {
 			hiddenDate: {
 				$lte: to,
 				$gte: from
