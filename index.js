@@ -27,13 +27,16 @@ app.get("/api/users", async (req, res) => {
 	const userlog = users.find({}).project({ _id: 0 })
 	const allUserLog = await userlog.toArray()
 	let returnedArr;
-	allUserLog.forEach(user => {
-		returnedArr = {
-			name: user.username,
-			_id: user.id
-		}
-	});
+	function parseUsers() {
+		allUserLog.forEach(user => {
+			returnedArr = {
+				name: user.username,
+				_id: user.id
+			}
+		});
+	}
 	console.log(returnedArr)
+	await parseUsers();
 
 	res.json(
 		returnedArr
