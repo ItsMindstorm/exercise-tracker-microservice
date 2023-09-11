@@ -10,7 +10,7 @@ dotenv.config();
 app.use(cors());
 app.use(express.static("public"))
 
-mongoose.connect(process.env.DB_URL_ALTERNATE)
+mongoose.connect(process.env.DB_URL)
 
 const userSchema = new mongoose.Schema({
 	username: {
