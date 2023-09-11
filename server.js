@@ -74,20 +74,46 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 		let date = (!req.body.date) ? new Date().toDateString() : new Date(req.body.date).toDateString()
 		console.log(date)
 
+		if (date == "Invalid Date") {
+			res.json({
+				error: "Invalid Date"
+			})
+		}
+
+		if (isNaN(parseFloat(req.body.duration))) {
+			res.json({
+				error: "Duration needs to be a number"
+			})
+		};
+
+
 		let exercise = new Exercise({
 			username: username,
 			description: req.body.description,
 			duration: req.body.duration,
 			date: date
 		});
-		exercise.save()
-		res.json({
-			username: username,
-			description: req.body.description,
-			duration: parseFloat(req.body.duration),
-			date: date,
-			_id: userId
+		exercise.save().catch(err => {
+			if (err) {
+				res.json({
+					error: "Could not save exercise"
+				})
+			}
+
+			return res.json({
+				username: username,
+				description: req.body.description,
+				duration: parseFloat(req.body.duration),
+				date: date,
+				_id: userId
+			})
 		})
+	}).catch(err => {
+		if (err) {
+			res.json({
+				error: "Wrong ID"
+			})
+		}
 	})
 })
 
@@ -100,6 +126,12 @@ app.get("/api/users/:_id/logs", async (req, res) => {
 
 	const username = await User.findById(userId).then(users => {
 		return users.username
+	}).catch(err => {
+		if (err) {
+			res.json({
+				error: "No exercises under this ID"
+			})
+		}
 	})
 
 	const query = from === undefined && to === undefined ? {
@@ -132,6 +164,12 @@ app.get("/api/users/:_id/logs", async (req, res) => {
 			log: log
 		})
 
+	}).catch(err => {
+		if (err) {
+			res.json({
+				error: "No exercises under this user"
+			})
+		}
 	})
 })
 
