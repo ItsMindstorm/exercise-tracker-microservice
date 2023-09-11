@@ -47,7 +47,7 @@ app.get("/api/users", async (req, res) => {
 app.post("/api/users/:_id/exercises", async (req, res) => {
 	const description = req.body.description;
 	const duration = parseInt(req.body.duration);
-	const date = new Date(req.body.date).toDateString();
+	const date = req.body.date === "" ? "" : new Date(req.body.date).toDateString();
 	const userFind = await users.findOne({ id: req.params._id })
 	console.log(userFind)
 
