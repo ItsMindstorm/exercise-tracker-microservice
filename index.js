@@ -23,6 +23,13 @@ app.use(
 	}),
 );
 
+app.get("/api/users", async (req, res) => {
+	const userlog = users.find({}).project({ _id: 0 })
+	const allUserLog = await userlog.toArray()
+
+	res.json(allUserLog)
+})
+
 app.post("/api/users/:_id/exercises", async (req, res) => {
 	const description = req.body.description;
 	const duration = parseInt(req.body.duration);
