@@ -25,26 +25,16 @@ app.use(
 
 app.get("/api/users", async (req, res) => {
 	const userlog = users.find({}).project({ _id: 0 })
-	const allUserLog = await userlog.toArray();
+	const allUserLog = await userlog.toArray()
+	let returnedArr = []
+	allUserLog.forEach(user => {
+		returnedArr.push({
+			name: user.username,
+			_id: user.id
+		})
+	});
 
-	console.log(allUserLog)
-	const modifiedUserLog = allUserLog.map(doc => {
-		return {
-			username: doc.username,
-			_id: doc.id
-		}
-	})
-	modifiedUserLog.forEach(user => {
-		res.write(JSON.stringify(user) + "\n")
-	})
-
-	res.end();
-
-
-	// 	res.json({
-	// 		username: allUserLog.username,
-	// 		_id: allUserLog.id,
-	// 	})
+	res.json(returnedArr)
 })
 
 app.post("/api/users/:_id/exercises", async (req, res) => {
