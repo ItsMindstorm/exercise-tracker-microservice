@@ -44,24 +44,25 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 	const description = req.body.description;
 	const duration = parseInt(req.body.duration);
 	const date = new Date(req.body.date).toDateString();
+	const userFind = await users.findOne({ id: req.params._id })
+	console.log(userFind)
 
-	if (users.findOne({ id: req.params._id })) {
-		await exercises.insertOne({
-			id: req.params._id,
-			description: description,
-			duration: duration,
-			date: date,
-			hiddenDate: new Date(req.body.date)
+	await exercises.insertOne({
+		id: req.params._id,
+		description: description,
+		duration: duration,
+		date: date,
+		hiddenDate: new Date(req.body.date)
 
-		});
+	});
 
-		res.json({
-			_id: req.params._id,
-			description: description,
-			duration: duration,
-			date: date,
-		});
-	}
+	res.json({
+		username: userFind.username,
+		_id: req.params._id,
+		description: description,
+		duration: duration,
+		date: date,
+	});
 });
 
 app.get("/api/users/:_id/logs", async (req, res) => {
