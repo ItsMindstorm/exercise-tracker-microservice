@@ -93,20 +93,13 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 			duration: req.body.duration,
 			date: date
 		});
-		exercise.save().catch(err => {
-			if (err) {
-				res.json({
-					error: "Could not save exercise"
-				})
-			}
-
-			return res.json({
-				username: username,
-				description: req.body.description,
-				duration: parseFloat(req.body.duration),
-				date: date,
-				_id: userId
-			})
+		exercise.save()
+		res.json({
+			username: username,
+			description: req.body.description,
+			duration: parseFloat(req.body.duration),
+			date: date,
+			_id: userId
 		})
 	}).catch(err => {
 		if (err) {
