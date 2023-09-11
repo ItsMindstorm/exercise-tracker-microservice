@@ -90,10 +90,13 @@ app.get("/api/users/:_id/logs", async (req, res) => {
 	let limit = req.query.limit
 	console.log(limit)
 
-
-
 	const username = await User.findById(userId).then(users => {
 		return users.username
+	}).catch(error => {
+		console.error(error);
+		res.json({
+			error: "No user under this ID"
+		})
 	})
 
 	const query = from === undefined && to === undefined ? {
