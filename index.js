@@ -26,12 +26,12 @@ app.use(
 app.get("/api/users", async (req, res) => {
 	const userlog = users.find({}).project({ _id: 0 })
 	const allUserLog = await userlog.toArray()
-	let returnedArr = []
+	let returnedArr;
 	allUserLog.forEach(user => {
-		returnedArr.push({
+		returnedArr = {
 			name: user.username,
 			_id: user.id
-		})
+		}
 	});
 	console.log(returnedArr)
 
@@ -96,7 +96,7 @@ app.get("/api/users/:_id/logs", async (req, res) => {
 		res.json({
 			_id: req.params._id,
 			count: count,
-			log: allExercises,
+			log: [allExercises],
 		})
 	} else {
 		res.json({
