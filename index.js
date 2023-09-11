@@ -26,22 +26,16 @@ app.use(
 app.get("/api/users", async (req, res) => {
 	const userlog = users.find({}).project({ _id: 0 })
 	const allUserLog = await userlog.toArray()
-	function parseUsers() {
-		let returnedArr = []
-		allUserLog.forEach(user => {
-			returnedArr = {
-				name: user.username,
-				_id: user.id
-			}
-		});
+	let returnedArr = []
 
-		return returnedArr
-	}
-	const parsed = parseUsers();
+	allUserLog.forEach(user => {
+		returnedArr.push({
+			name: user.username,
+			_id: user.id
+		})
+	});
 
-	res.json(
-		parsed
-	)
+	res.json(returnedArr)
 })
 
 app.post("/api/users/:_id/exercises", async (req, res) => {
