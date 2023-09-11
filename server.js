@@ -71,12 +71,13 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 	console.log(userId)
 	await User.findById(userId).then(users => {
 		let username = users.username
+		let date = (!req.body.date) ? new Date().toDateString : new Date(req.body.date).toDateString()
 
 		let exercise = new Exercise({
 			username: username,
 			description: req.body.description,
 			duration: req.body.duration,
-			date: req.body.date === undefined ? "" : new Date(req.body.date).toDateString()
+			date: date
 		});
 		exercise.save()
 		res.json(exercise)
