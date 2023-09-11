@@ -71,7 +71,7 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 	console.log(userId)
 	await User.findById(userId).then(users => {
 		let username = users.username
-		let date = (!req.body.date) ? new Date().toDateString : new Date(req.body.date).toDateString()
+		let date = (!req.body.date) ? new Date().toDateString() : new Date(req.body.date).toDateString()
 
 		let exercise = new Exercise({
 			username: username,
