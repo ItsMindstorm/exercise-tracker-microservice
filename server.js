@@ -76,7 +76,7 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 			username: username,
 			description: req.body.description,
 			duration: req.body.duration,
-			date: new Date(req.body.date).toDateString()
+			date: req.body.date === undefined ? "" : new Date(req.body.date).toDateString()
 		});
 		exercise.save()
 		res.json(exercise)
