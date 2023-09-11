@@ -26,8 +26,18 @@ app.use(
 app.get("/api/users", async (req, res) => {
 	const userlog = users.find({}).project({ _id: 0 })
 	const allUserLog = await userlog.toArray()
+	let returnedArr = []
+	allUserLog.forEach(user => {
+		returnedArr.push({
+			name: user.username,
+			_id: user.id
+		})
+	});
+	console.log(returnedArr)
 
-	res.json(allUserLog)
+	res.json(
+		returnedArr
+	)
 })
 
 app.post("/api/users/:_id/exercises", async (req, res) => {
@@ -42,6 +52,7 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 			duration: duration,
 			date: date,
 			hiddenDate: new Date(req.body.date)
+
 		});
 
 		res.json({
@@ -98,7 +109,10 @@ app.post("/api/users", (req, res) => {
 	const username = req.body.username;
 
 	const id = crypto.randomUUID();
-	users.insertOne({ user: username, id: id });
+	users.insertOne({
+		username: username,
+		id: id
+	});
 
 	res.json({
 		username: username,
