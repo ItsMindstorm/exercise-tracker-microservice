@@ -26,8 +26,7 @@ app.use(
 app.get("/api/users", async (req, res) => {
 	const userlog = users.find({}).project({ _id: 0 })
 	const allUserLog = await userlog.toArray()
-	let returnedArr = {}
-
+	let returnedArr = []
 	allUserLog.forEach(user => {
 		returnedArr.push({
 			name: user.username,
